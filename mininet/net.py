@@ -858,7 +858,7 @@ class Mininet(object):
             pids[h] = []
             for _core in range(num_procs):
                 h.cmd('while true; do a=1; done &')
-                    pids[h].append(h.cmd('echo $!').strip())
+                pids[h].append(h.cmd('echo $!').strip())
         outputs = {}
         time = {}
         # get the initial cpu time for each host
