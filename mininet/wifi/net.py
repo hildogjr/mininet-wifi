@@ -45,7 +45,7 @@ class Mininet_wifi(Mininet):
 
     def __init__(self, topo=None, switch=OVSKernelSwitch,
                  accessPoint=OVSKernelAP, host=Host, station=Station,
-                 car=Car, controller=DefaultController, isWiFi=False,
+                 car=Car, controller=DefaultController,
                  link=Link, intf=Intf, build=True, xterms=False,
                  ipBase='10.0.0.0/8', inNamespace=False,
                  autoSetMacs=False, autoStaticArp=False, autoPinCpus=False,
@@ -126,7 +126,6 @@ class Mininet_wifi(Mininet):
         self.DRAW = False
         self.ifb = False
         self.isVanet = False
-        self.isWiFi = True
         self.noise_threshold = noise_threshold
         self.cca_threshold = cca_threshold
         self.configureWiFiDirect = configureWiFiDirect
@@ -1543,7 +1542,7 @@ class Mininet_wifi(Mininet):
                 node.setRange(float(value), intf=node.params['wlan'][0])
             if len(range_list) != wlans:
                 error('*** Error (%s): signal range length'
-                      'differs from the number of interfaces!' % node.name)
+                      ' differs from the number of interfaces!' % node.name)
                 exit(1)
         else:
             for _ in range(0, wlans):
