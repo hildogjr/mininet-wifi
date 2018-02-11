@@ -20,6 +20,7 @@ from re import findall
 
 from mininet.log import info, error, warn, debug
 from mininet.util import (quietRun, errRun, isShellBuiltin)
+from mininet.node import Node
 from mininet.moduledeps import moduleDeps, pathCheck, TUN
 from mininet.link import Link, Intf, OVSIntf
 from mininet.wifi.link import TCWirelessLink, TCLinkWirelessAP,\
@@ -33,7 +34,7 @@ from mininet.wifi.util import moveIntf
 from mininet.utils.private_folder_manager import PrivateFolderManager
 
 
-class Node_wifi(object):
+class Node_wifi(Node):
     """A virtual network node is simply a shell in a network namespace.
        We communicate with it using pipes."""
 
@@ -138,7 +139,7 @@ class Node_wifi(object):
     def plot(self, position):
         self.params['position'] = position.split(',')
         self.params['range'] = [0]
-        self.plot = True
+        self.plotted = True
 
     def setMeshIface(self, iface, ssid='', **params):
         wlan = self.params['wlan'].index(iface)
@@ -248,12 +249,15 @@ class Node_wifi(object):
 
     def getMAC(self, iface):
         "get Mac Address of any Interface"
-        _macMatchRegex = re.compile(r'..:..:..:..:..:..')
-        debug('getting mac address from %s\n' % iface)
-        macaddr = str(self.pexec('ip addr show %s' % iface))
-        mac = _macMatchRegex.findall(macaddr)
-        debug('%s\n' % mac[0])
-        return mac[0]
+        try:
+            _macMatchRegex = re.compile(r'..:..:..:..:..:..')
+            debug('getting mac address from %s\n' % iface)
+            macaddr = str(self.pexec('ip addr show %s' % iface))
+            mac = _macMatchRegex.findall(macaddr)
+            debug('%s\n' % mac[0])
+            return mac[0]
+        except:
+            info('Please run sudo mn -c.\n')
 
     def ifbSupport(self, wlan, ifbID):
         "Support to Intermediate Functional Block (IFB) Devices"
