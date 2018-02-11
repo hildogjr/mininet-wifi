@@ -624,6 +624,12 @@ class Node( object ):
         "Make sure our class dependencies are available"
         pathCheck( 'mnexec', 'ip addr', moduleName='Mininet')
 
+    def plot(self, position):
+        self.params['position'] = position.split(',')
+        self.params['range'] = [0]
+        self.plotted = True
+
+
 class Host( Node ):
     "A host is simply a Node"
     pass
