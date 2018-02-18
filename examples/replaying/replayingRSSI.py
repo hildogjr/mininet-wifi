@@ -1,8 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-"""
-Replaying RSSI
-"""
+"Replaying RSSI"
 
 from mininet.node import Controller,OVSKernelSwitch
 from mininet.log import setLogLevel, info
