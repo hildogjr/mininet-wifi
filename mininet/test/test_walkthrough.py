@@ -268,6 +268,17 @@ class testWalkthrough(unittest.TestCase):
         p.sendline('exit')
         p.wait()
 
+    def testWiFiDirect(self):
+        "Start Mininet-WiFi using wifi direct, then test ping"
+        p = pexpect.spawn(
+            'python3 examples/wifiDirect.py')
+        sleep(12)
+        p.sendline('sta1 ping -c 1 sta2')
+        p.expect('1 packets transmitted, 1 received')
+        p.expect(self.prompt)
+        p.sendline('exit')
+        p.wait()
+
     def testMesh(self):
         "Start Mininet-WiFi with wireless mesh, then test ping"
         c = pexpect.spawn('mn -c')
