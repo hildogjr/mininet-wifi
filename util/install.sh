@@ -697,6 +697,23 @@ function wmediumd {
     popd
 }
 
+# Script for installing wpan tools
+function wpan_tools {
+    echo "Installing wpan tools sources"
+    cd $BUILD_DIR
+    if [ -d wpan-tools ]; then
+      echo "Removing wpan-tools..."
+      rm -r wpan-tools
+    fi
+    git clone --depth=1 https://github.com/ramonfontes/wpan-tools
+    pushd $BUILD_DIR/wpan-tools
+    sudo ./autogen.sh
+    sudo ./configure
+    sudo make
+    sudo make install
+    popd
+}
+
 function all {
     if [ "$DIST" = "Fedora" ]; then
         printf "\nFedora 18+ support (still work in progress):\n"
@@ -724,6 +741,7 @@ function all {
     oftest
     cbench
     wmediumd
+    wpan_tools
     echo "Enjoy Mininet-WiFi!"
 }
 
@@ -841,6 +859,7 @@ else
       y)    ryu;;
       0)    OF_VERSION=1.0;;
       3)    OF_VERSION=1.3;;
+      6)    wpan_tools;;
       ?)    usage;;
       esac
     done

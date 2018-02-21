@@ -228,7 +228,7 @@ class module(object):
                         rfkill = subprocess.check_output(
                             'rfkill list | grep %s | awk \'{print $1}\''
                             '| tr -d ":"' % phys[0],
-                            shell=True).split('\n')
+                            shell=True).decode('utf-8').split('\n')
                         debug('rfkill unblock %s\n' % rfkill[0])
                         os.system('rfkill unblock %s' % rfkill[0])
                         os.system('iw phy %s set netns %s' % (phys[0], node.pid))
