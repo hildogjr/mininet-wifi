@@ -225,11 +225,12 @@ class module(object):
                     for wlan in range(0, len(node.params['wlan'])):
                         node.phyID[wlan] = cls.phyID
                         cls.phyID += 1
-                        rfkill = os.system(
-                            'rfkill list | grep %s | awk \'{print $1}\' '
-                            '| tr -d \":\" >/dev/null 2>&1' % phys[0])
-                        debug('rfkill unblock %s\n' % rfkill)
-                        os.system('rfkill unblock %s' % rfkill)
+                        rfkill = subprocess.check_output(
+                            'rfkill list | grep %s | awk \'{print $1}\''
+                            '| tr -d ":"' % phys[0],
+                            shell=True).split('\n')
+                        debug('rfkill unblock %s\n' % rfkill[0])
+                        os.system('rfkill unblock %s' % rfkill[0])
                         os.system('iw phy %s set netns %s' % (phys[0], node.pid))
                         node.cmd('ip link set %s down' % cls.wlan_list[0])
                         node.cmd('ip link set %s name %s'
@@ -239,12 +240,6 @@ class module(object):
                             ifbID += 1
                         cls.wlan_list.pop(0)
                         phys.pop(0)
-            for phy in phys:
-                rfkill = os.system(
-                    'rfkill list | grep %s | awk \'{print $1}\' '
-                    '| tr -d \":\" >/dev/null 2>&1' % phy)
-                debug('rfkill unblock %s\n' % rfkill)
-                os.system('rfkill unblock %s' % rfkill)
         except:
             logging.exception("Warning:")
             info("Warning! Error when loading mac80211_hwsim. "
